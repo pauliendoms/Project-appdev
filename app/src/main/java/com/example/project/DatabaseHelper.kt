@@ -25,7 +25,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
     companion object {
         // If you change the database schema, you must increment the database version.
-        const val DATABASE_VERSION = 7
+        const val DATABASE_VERSION = 8
         const val DATABASE_NAME = "FeedReader.db"
 
         const val TABLE_NAME = "card"
@@ -35,18 +35,18 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
         const val SQL_CREATE_ENTRIES =
             "CREATE TABLE $TABLE_NAME (" +
-                    "${BaseColumns._ID} PRIMARY KEY," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "$COLUMN_QUESTION TEXT," +
                     "$COLUMN_ANSWER TEXT)"
 
         const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS $TABLE_NAME"
     }
 
-    fun deleteCard(id: Int) : Int {
+    fun deleteCard(q: String, a: String) : Int {
         val db = this.writableDatabase
         Log.d("TRYING", "gebreurt dit?")
 
-        val rows = db.delete(TABLE_NAME, "$COLUMN_ID IS ?", arrayOf(id.toString()))
+        val rows = db.delete(TABLE_NAME, "$COLUMN_QUESTION LIKE ? AND $COLUMN_ANSWER LIKE ?", arrayOf(q, a))
 
 
 

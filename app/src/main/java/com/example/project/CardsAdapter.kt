@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 
-class CardsAdapter(private val mList: List<CardViewModel>) : RecyclerView.Adapter<CardsAdapter.ViewHolder>() {
+class CardsAdapter(private var mList: List<CardViewModel>) : RecyclerView.Adapter<CardsAdapter.ViewHolder>() {
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,10 +38,11 @@ class CardsAdapter(private val mList: List<CardViewModel>) : RecyclerView.Adapte
             Log.d("TRYING", "Here we are now")
             Log.d("TRYING", position.toString())
 
-             val dbHelper = DatabaseHelper(holder.deleteButton.context)
-            val rows = dbHelper.deleteCard(position+1)
+            val dbHelper = DatabaseHelper(holder.deleteButton.context)
+            val rows = dbHelper.deleteCard(cardViewModel.question, cardViewModel.answer)
             Log.d("TRYING", "why")
             Log.d("TRYING", rows.toString())
+            updateList(holder.itemView)
         }
 
     }
@@ -58,8 +59,8 @@ class CardsAdapter(private val mList: List<CardViewModel>) : RecyclerView.Adapte
         val deleteButton: ImageButton = itemView.findViewById(R.id.btn_del_card)
     }
 
-    fun updateList(holder: ViewHolder) {
-        val dbHelper = DatabaseHelper(holder.deleteButton.context)
+    fun updateList(view: View) {
+        val dbHelper = DatabaseHelper(view.context)
 
         val cursor = dbHelper.getCards()
 
@@ -69,21 +70,27 @@ class CardsAdapter(private val mList: List<CardViewModel>) : RecyclerView.Adapte
 
         Log.d("TRYING", getal.toString());
 
-        with(cursor) {
-            moveToFirst()
-            do {
-                val q = getColumnIndex(DatabaseHelper.COLUMN_QUESTION);
-                val a = getColumnIndex(DatabaseHelper.COLUMN_ANSWER);
+        if (getal > 0) {
+            with(cursor) {
+                moveToFirst()
+                do {
+                    val q = getColumnIndex(DatabaseHelper.COLUMN_QUESTION);
+                    val a = getColumnIndex(DatabaseHelper.COLUMN_ANSWER);
 
-                val qu = getString(q);
-                val an = getString(a);
-                val listItem = CardViewModel(qu, an);
-                data.add(listItem);
-                Log.d("TRYING", "cursor")
-            } while (moveToNext())
+                    val qu = getString(q);
+                    val an = getString(a);
+                    val listItem = CardViewModel(qu, an);
+                    data.add(listItem);
+                    Log.d("TRYING", "cursor")
+                } while (moveToNext())
+            }
         }
 
+
         cursor.close()
+        this.mList = data;
+        notifyDataSetChanged()
+
         // ik weet het ni meer
     }
 }

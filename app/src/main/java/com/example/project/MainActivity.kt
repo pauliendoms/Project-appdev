@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
@@ -39,19 +40,22 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("TRYING", getal.toString());
 
-        with(cursor) {
-            moveToFirst()
-            do {
-                val q = getColumnIndex(DatabaseHelper.COLUMN_QUESTION);
-                val a = getColumnIndex(DatabaseHelper.COLUMN_ANSWER);
+        if (getal > 0) {
+            with(cursor) {
+                moveToFirst()
+                do {
+                    val q = getColumnIndex(DatabaseHelper.COLUMN_QUESTION);
+                    val a = getColumnIndex(DatabaseHelper.COLUMN_ANSWER);
 
-                val qu = getString(q);
-                val an = getString(a);
-                val listItem = CardViewModel(qu, an);
-                data.add(listItem);
-                Log.d("TRYING", "cursor")
-            } while (moveToNext())
+                    val qu = getString(q);
+                    val an = getString(a);
+                    val listItem = CardViewModel(qu, an);
+                    data.add(listItem);
+                    Log.d("TRYING", "cursor")
+                } while (moveToNext())
+            }
         }
+
 
         cursor.close()
         Log.d("TRYING", "DATA: $data")
@@ -80,7 +84,14 @@ class MainActivity : AppCompatActivity() {
         val newRowId = dbHelper.addCard(question, answer)
         Log.d("TRYING", newRowId.toString());
 
+        /*
         finish()
         startActivity(getIntent());
+
+         */
+
+        val rv = findViewById<RecyclerView>(R.id.recycler_view)
+        (rv.adapter as CardsAdapter).updateList(rv)
+
     }
 }

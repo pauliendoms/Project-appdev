@@ -1,17 +1,51 @@
 package com.example.project
 
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
+
+    var theme: String = ""
+    var name: String = ""
+
+    override fun onSharedPreferenceChanged(sp: SharedPreferences, s: String) {
+        when(s) {
+            "theme" -> {
+                Log.d("TRYING", s)
+                val lol = sp.getString("theme", null)
+                Log.d("TRYING", " lol $lol")
+                when (lol) {
+                    "light" -> {
+                        Log.d("TRYING", "light")
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    }
+                    "dark" -> {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    }
+                }
+            }
+            "name" -> {
+                Log.d("TRYING", s)
+                val name_string = findViewById<TextView>(R.id.tv_name)
+                name_string.text = "Hello, ${sp.getString("name", null)}"
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +98,22 @@ class MainActivity : AppCompatActivity() {
 
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
+
+        val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sp.registerOnSharedPreferenceChangeListener(this)
+
+        val n = findViewById<TextView>(R.id.tv_name)
+        n.text = "Hello, ${sp.getString("name", null)}"
+
+        when (sp.getString("theme", null)) {
+            "light" -> {
+                Log.d("TRYING", "light")
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            "dark" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+        }
     }
 
     fun startQuiz(view: View?) {
@@ -93,5 +143,10 @@ class MainActivity : AppCompatActivity() {
         val rv = findViewById<RecyclerView>(R.id.recycler_view)
         (rv.adapter as CardsAdapter).updateList(rv)
 
+    }
+
+    fun openSettings(view: View?) {
+        val intent = Intent(this, SettingsActivity::class.java);
+        startActivity(intent);
     }
 }

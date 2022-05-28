@@ -15,7 +15,7 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".MainActivityQuiz"
+            android:name=".QuizActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

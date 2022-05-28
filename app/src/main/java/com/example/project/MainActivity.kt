@@ -1,17 +1,13 @@
 package com.example.project
 
-import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -115,7 +111,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     fun startQuiz(view: View?) {
         // Do something in response to button click
-        val intent = Intent(this, MainActivityQuiz::class.java);
+        val intent = Intent(this, QuizActivity::class.java);
         startActivity(intent);
     }
 

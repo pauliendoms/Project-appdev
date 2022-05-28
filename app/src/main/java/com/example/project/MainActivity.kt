@@ -20,9 +20,6 @@ import com.google.android.material.textfield.TextInputEditText
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    var theme: String = ""
-    var name: String = ""
-
     override fun onSharedPreferenceChanged(sp: SharedPreferences, s: String) {
         when(s) {
             "theme" -> {

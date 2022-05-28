@@ -6,4 +6,5 @@
     <string name="hello">Hello,</string>
     <string name="name">Name</string>
     <string name="theme">Theme</string>
+    <string name="start">Start</string>
 </resources>

@@ -1,10 +1,8 @@
 package com.example.project
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceScreen
 
 class SettingsActivity : AppCompatActivity() {

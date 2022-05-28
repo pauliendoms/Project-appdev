@@ -19,12 +19,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onSharedPreferenceChanged(sp: SharedPreferences, s: String) {
         when(s) {
             "theme" -> {
-                Log.d("TRYING", s)
                 val lol = sp.getString("theme", null)
-                Log.d("TRYING", " lol $lol")
                 when (lol) {
                     "light" -> {
-                        Log.d("TRYING", "light")
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
                     "dark" -> {
@@ -33,7 +30,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
             }
             "name" -> {
-                Log.d("TRYING", s)
                 val name_string = findViewById<TextView>(R.id.tv_name)
                 name_string.text = "${getString(R.string.hello)} ${sp.getString("name", null)}"
             }
@@ -44,22 +40,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // getting the recyclerview by its id
         val recyclerview = findViewById<RecyclerView>(R.id.recycler_view)
 
-        // this creates a vertical layout Manager
         recyclerview.layoutManager = LinearLayoutManager(this)
 
-        // ArrayList of class ItemsViewModel
         val data = ArrayList<CardViewModel>()
 
-        // This loop will create 20 Views containing
-        // the image with the count of view
-
         val dbHelper = DatabaseHelper(this)
-
-// Define a projection that specifies which columns from the database
-// you will actually use after this query.
 
         val cursor = dbHelper.getCards()
 
@@ -83,13 +70,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
         }
 
-
         cursor.close()
-        Log.d("TRYING", "DATA: $data")
-        // This will pass the ArrayList to our Adapter
+
         val adapter = CardsAdapter(data)
 
-        // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
 
         val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -110,7 +94,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     fun startQuiz(view: View?) {
-        // Do something in response to button click
         val intent = Intent(this, QuizActivity::class.java);
         startActivity(intent);
     }
@@ -119,19 +102,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         val question = findViewById<TextInputEditText>(R.id.question_input).text.toString();
         val answer = findViewById<TextInputEditText>(R.id.answer_input).text.toString();
 
-        Log.d("TRYING", question);
-        Log.d("TRYING", answer);
-
         val dbHelper = DatabaseHelper(this);
 
         val newRowId = dbHelper.addCard(question, answer)
-        Log.d("TRYING", newRowId.toString());
-
-        /*
-        finish()
-        startActivity(getIntent());
-
-         */
 
         val rv = findViewById<RecyclerView>(R.id.recycler_view)
         (rv.adapter as CardsAdapter).updateList(rv)

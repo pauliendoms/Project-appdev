@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             "name" -> {
                 Log.d("TRYING", s)
                 val name_string = findViewById<TextView>(R.id.tv_name)
-                name_string.text = "Hello, ${sp.getString("name", null)}"
+                name_string.text = "${getString(R.string.hello)} ${sp.getString("name", null)}"
             }
         }
     }
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         sp.registerOnSharedPreferenceChangeListener(this)
 
         val n = findViewById<TextView>(R.id.tv_name)
-        n.text = "Hello, ${sp.getString("name", null)}"
+        n.text = "${getString(R.string.hello)} ${sp.getString("name", null)}"
 
         when (sp.getString("theme", null)) {
             "light" -> {

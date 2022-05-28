@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Project</string>
+    <string name="add_card">Voeg toe</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="settings">Instellingen</string>
+    <string name="hello">Hallo,</string>
+    <string name="name">Naam</string>
+    <string name="theme">Thema</string>
+</resources>
